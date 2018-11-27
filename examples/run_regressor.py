@@ -198,7 +198,7 @@ class ArdProcessor(DataProcessor):
   def read_tsv(self, path):
     df = pd.read_csv(path, sep="\t")
     return [(str(text), str(label)) for text,label in zip(df['reviewText'],
-                                                          df['helpful_bin'])]
+                                                          df['helpful_rate'])]
 
 
   def get_train_examples(self, data_dir):
@@ -215,10 +215,6 @@ class ArdProcessor(DataProcessor):
     """See base class."""
     return self._create_examples(
       self.read_tsv(os.path.join(data_dir, "test.tsv")), "test")
-
-  def get_labels(self):
-    """See base class."""
-    return ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
   def _create_examples(self, lines, set_type):
     """Creates examples for the training and dev sets."""
@@ -469,7 +465,6 @@ def main():
         "cola": ColaProcessor,
         "mnli": MnliProcessor,
         "mrpc": MrpcProcessor,
-        "ard": ArdProcessor,
     }
 
     if args.local_rank == -1 or args.no_cuda:
