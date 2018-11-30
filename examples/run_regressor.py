@@ -31,7 +31,7 @@ from torch.utils.data import TensorDataset, DataLoader, RandomSampler, Sequentia
 from torch.utils.data.distributed import DistributedSampler
 
 from pytorch_pretrained_bert.tokenization import BertTokenizer
-from pytorch_pretrained_bert.modeling import BertForSequenceClassification
+from pytorch_pretrained_bert.modeling import BertForSequenceRegression
 from pytorch_pretrained_bert.optimization import BertAdam
 
 logging.basicConfig(format = '%(asctime)s - %(levelname)s - %(name)s -   %(message)s',
@@ -465,6 +465,7 @@ def main():
         "cola": ColaProcessor,
         "mnli": MnliProcessor,
         "mrpc": MrpcProcessor,
+        "ard":ArdProcessor,
     }
 
     if args.local_rank == -1 or args.no_cuda:
@@ -517,7 +518,7 @@ def main():
             len(train_examples) / args.train_batch_size / args.gradient_accumulation_steps * args.num_train_epochs)
 
     # Prepare model
-    model = BertForSequenceClassification.from_pretrained(args.bert_model, len(label_list),
+    model = BertForSequenceRegression.from_pretrained(args.bert_model, len(label_list),
                 cache_dir=PYTORCH_PRETRAINED_BERT_CACHE / 'distributed_{}'.format(args.local_rank))
     if args.fp16:
         model.half()
