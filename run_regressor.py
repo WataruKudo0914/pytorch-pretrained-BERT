@@ -221,8 +221,8 @@ class ArdProcessor(DataProcessor):
     examples = []
     for (i, line) in enumerate(lines):
       guid = "%s-%s" % (set_type, i)
-      text_a = tokenization.convert_to_unicode(line[0])
-      label = tokenization.convert_to_unicode(line[1])
+      text_a = line[0]
+      label = line[1]
       examples.append(
           InputExample(guid=guid, text_a=text_a, text_b=None, label=label))
     return examples
