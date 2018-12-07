@@ -874,6 +874,10 @@ class BertForSequenceClassification(PreTrainedBertModel):
         else:
             return logits
 
+    def get_pooled_output(self, input_ids, token_type_ids=None, attention_mask=None, labels=None):
+        _, pooled_output = self.bert(input_ids, token_type_ids, attention_mask, output_all_encoded_layers=False)
+        return pooled_output
+
 class BertForSequenceRegression(PreTrainedBertModel):
     """BERT model for regression.
     This module is composed of the BERT model with a linear layer on top of
